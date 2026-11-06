@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farm Adventures - English Fun!</title>
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #2E7D32;
+      --secondary: #FF9800;
+      --accent: #03A9F4;
+      --background: #E8F5E9;
+      --card-bg: #FFFFFF;
+      --text: #1B5E20;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Fredoka', cursive, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #A8E063 0%, #56AB2F 100%);
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 24px;
+      max-width: 620px;
+      width: 100%;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      border: 5px solid #FFF;
+      position: relative;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      color: var(--primary-dark);
+      margin: 0;
+      font-size: 28px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .badge-level {
+      background: var(--secondary);
+      color: white;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 5px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar-container {
+      background: #E0E0E0;
+      height: 18px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 15px 0;
+      border: 2px solid #C8E6C9;
+    }
+
+    .progress-bar {
+      background: var(--primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 10px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--text);
+      margin-bottom: 15px;
+      background: #F1F8E9;
+      padding: 8px 15px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: #FAFAFA;
+      border: 3px dashed #81C784;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .question-title {
+      font-size: 22px;
+      color: #333;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+
+    .audio-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(3,169,244,0.3);
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    .audio-btn:hover {
+      background: #0288D1;
+    }
+
+    .audio-btn:active {
+      transform: scale(0.95);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .option-btn {
+      background: white;
+      border: 3px solid #C8E6C9;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      color: #2E7D32;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .option-btn:hover {
+      border-color: var(--secondary);
+      background: #FFF8E1;
+      transform: translateY(-2px);
+    }
+
+    .fill-input {
+      width: 85%;
+      padding: 14px;
+      font-size: 20px;
+      border: 3px solid var(--accent);
+      border-radius: 14px;
+      text-align: center;
+      margin-top: 10px;
+      outline: none;
+      color: #333;
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 8px rgba(76,175,80,0.3);
+      transition: transform 0.1s;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 15px;
+      display: none;
+      text-align: left;
+    }
+
+    .feedback.incorrect {
+      background: #FFEBEE;
+      border: 2px solid #F44336;
+      color: #C62828;
+    }
+
+    .feedback-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .next-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      display: none;
+      box-shadow: 0 4px 8px rgba(255,152,0,0.3);
+    }
+
+    .results {
+      text-align: center;
+      display: none;
+    }
+
+    .results h2 {
+      font-size: 30px;
+      color: var(--primary-dark);
+    }
+
+    .score-badge {
+      font-size: 60px;
+      margin: 10px 0;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    .new-quiz-btn {
+      background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 35px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 6px 15px rgba(255,152,0,0.4);
+      transition: transform 0.2s;
+    }
+
+    .new-quiz-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>🐮 Farm Adventure 🐥</h1>
+    <div class="badge-level" id="quiz-level-badge">Quiz 1 - Let's Learn!</div>
+  </header>
+
+  <div id="quiz-screen">
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <div class="stats">
+      <span id="question-count">Question 1/10</span>
+      <span id="score-count">⭐ Stars: 0</span>
+    </div>
+
+    <div class="card">
+      <button class="audio-btn" onclick="speakQuestion()">🔊 Listen Question</button>
+      <div class="question-title" id="question-text">Loading...</div>
+      
+      <div id="interactive-area"></div>
+    </div>
+
+    <div class="feedback incorrect" id="feedback">
+      <div class="feedback-title">💡 ¿Repasamos un poquito? (Explicación):</div>
+      <div id="feedback-text"></div>
+    </div>
+
+    <div style="text-align: center;">
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
+    </div>
+  </div>
+
+  <div class="results" id="results-screen">
+    <div class="score-badge">🏆</div>
+    <h2>Great Job, Super Star!</h2>
+    <p id="final-score" style="font-size: 22px; font-weight: bold; color: #333;"></p>
+    <p id="final-feedback" style="font-size: 16px; color: #555; margin-bottom: 20px;"></p>
+    
+    <button class="new-quiz-btn" onclick="generateNewQuiz()">🚀 Create New Quiz & Practice Again!</button>
+  </div>
+</div>
+
+<script>
+// Banco amplio de preguntas basadas en las imágenes (Vocabulario de granja y Presente Continuo)
+const questionBank = [
+  // Grupo A: Vocabulario de animales y personas
+  { q: "A baby cow is called a...", type: "mc", options: ["calf", "chick", "duck", "rooster"], ans: "calf", explain: "En la granja, el bebé de la vaca se llama 'calf' (ternero)." },
+  { q: "A baby hen or rooster is a...", type: "mc", options: ["chick", "calf", "sheep", "goat"], ans: "chick", explain: "El pollito es la cría de la gallina y se llama 'chick'." },
+  { q: "A ________ grows plants and raises animals.", type: "fill", ans: "farmer", explain: "La persona que cultiva y cuida animales es el granjero: 'farmer'." },
+  { q: "Which animal sings early in the morning?", type: "mc", options: ["rooster", "sheep", "duck", "horse"], ans: "rooster", explain: "El gallo canta por la mañana y se llama 'rooster'." },
+  { q: "A horse can run very ________.", type: "fill", ans: "fast", explain: "Los caballos pueden correr muy rápido ('fast')." },
+  { q: "Which animal goes 'quack, quack'?", type: "mc", options: ["duck", "cow", "goat", "horse"], ans: "duck", explain: "El pato hace 'quack, quack' y en inglés es 'duck'." },
+  { q: "Which animal gives us wool and says 'baa'?", type: "mc", options: ["sheep", "calf", "chick", "farmer"], ans: "sheep", explain: "La oveja lanuda es la 'sheep'." },
+  { q: "Complete: A baby duck is a ________.", type: "fill", ans: "duckling", explain: "El patito pequeño se conoce como duckling o patito." },
+
+  // Grupo B: Presente Continuo - Acciones y Preguntas con What
+  { q: "What's the horse doing?", type: "mc", options: ["It's eating.", "They're sleeping.", "It's swimming.", "They're running."], ans: "It's eating.", explain: "Para un solo animal ('horse') usamos singular: 'It's eating'." },
+  { q: "What are the ducks doing?", type: "mc", options: ["They're swimming.", "It's eating.", "They're sleeping.", "It's running."], ans: "They're swimming.", explain: "Para plural ('ducks') usamos 'They're swimming'." },
+  { q: "What's the cow doing?", type: "mc", options: ["It's eating.", "They're running.", "It's swimming.", "They're playing."], ans: "It's eating.", explain: "Una sola vaca ('the cow') realiza la acción con 'It's eating'." },
+  { q: "What are the chicks doing?", type: "mc", options: ["They're sleeping.", "It's eating.", "They're swimming.", "It's running."], ans: "They're sleeping.", explain: "Varios pollitos ('chicks') usan 'They're sleeping'." },
+  { q: "What are the horses doing?", type: "mc", options: ["They're running.", "It's eating.", "They're swimming.", "It's sleeping."], ans: "They're running.", explain: "Para caballos en plural usamos 'They're running'." },
+  { q: "What's the hen doing?", type: "mc", options: ["It's walking.", "They're eating.", "It's swimming.", "They're sleeping."], ans: "It's walking.", explain: "Una gallina en singular responde con 'It's walking'." },
+  { q: "Complete: What are the ducks ________?", type: "fill", ans: "doing", explain: "La pregunta para saber la acción es 'What are they doing?'." },
+
+  // Grupo C: Preguntas Yes / No y Gramática (Is / Are)
+  { q: "Is the girl eating?", type: "mc", options: ["No, she isn't.", "Yes, he is.", "No, they aren't.", "Yes, they are."], ans: "No, she isn't.", explain: "Para la niña ('girl'), la respuesta negativa corta es 'No, she isn't'." },
+  { q: "Are they sleeping?", type: "mc", options: ["Yes, they are.", "No, he isn't.", "Yes, she is.", "No, it isn't."], ans: "Yes, they are.", explain: "Si la pregunta inicia con 'Are they...?', respondemos 'Yes, they are'." },
+  { q: "Complete the question: _____ the boy swimming?", type: "fill", ans: "Is", explain: "Para preguntar por un niño en singular ('the boy') usamos 'Is'." },
+  { q: "Is he washing his hands?", type: "mc", options: ["Yes, he is.", "No, she isn't.", "Yes, they are.", "No, they aren't."], ans: "Yes, he is.", explain: "Para un niño ('he') afirmativo usamos 'Yes, he is'." },
+  { q: "Complete: The chicks are ________ (sleep).", type: "fill", ans: "sleeping", explain: "Al verbo sleep le agregamos '-ing' para formar 'sleeping'." },
+  { q: "Are they running?", type: "mc", options: ["Yes, they are.", "No, he isn't.", "No, she isn't.", "Yes, it is."], ans: "Yes, they are.", explain: "Las preguntas con 'Are they...?' afirmativas usan 'Yes, they are'." },
+  { q: "Complete: ________ the girl playing?", type: "fill", ans: "Is", explain: "Para 'the girl' (singular) en pregunta de presente continuo usamos 'Is'." },
+  { q: "Is the boy swimming?", type: "mc", options: ["Yes, he is.", "No, she isn't.", "Yes, they are.", "No, it isn't."], ans: "Yes, he is.", explain: "Para el niño nadando, la respuesta afirmativa es 'Yes, he is'." },
+  { q: "Is she playing?", type: "mc", options: ["No, she isn't.", "Yes, they are.", "No, he isn't.", "Yes, it is."], ans: "No, she isn't.", explain: "La respuesta corta negativa para 'she' es 'No, she isn't'." },
+  { q: "Complete: ________ they running?", type: "fill", ans: "Are", explain: "Para el pronombre plural 'they' en pregunta, usamos 'Are'." },
+  { q: "Complete: The boy is ________ (swim).", type: "fill", ans: "swimming", explain: "El verbo swim duplica la 'm' en presente continuo: 'swimming'." },
+  { q: "Is the hen sleeping?", type: "mc", options: ["No, it isn't.", "Yes, they are.", "No, he isn't.", "Yes, she is."], ans: "No, it isn't.", explain: "Para un animal singular como 'the hen', usamos 'It' en la respuesta corta negativa ('No, it isn't')." },
+  { q: "Complete: Is the boy washing his ________?", type: "fill", ans: "hands", explain: "La frase completa del libro es lavarse las manos: 'wash his hands'." },
+  { q: "Complete: The girl is ________ (eat).", type: "fill", ans: "eating", explain: "Al verbo eat se le añade '-ing' para obtener 'eating'." }
+];
+
+let currentQuiz = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let quizCount = 1;
+let currentQuestion = null;
+
+// Mezclar y tomar 10 preguntas distintas del banco
+fnShuffleArray = (array) => {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}
+
+function startNewQuiz() {
+  currentQuestionIndex = 0;
+  score = 0;
+  
+  // Clonar y barajar el banco para sacar 10 preguntas nuevas
+  let shuffled = fnShuffleArray([...questionBank]);
+  currentQuiz = shuffled.slice(0, 10);
+
+  document.getElementById("quiz-level-badge").innerText = `Quiz #${quizCount} - Farm Practice`;
+  document.getElementById("results-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  
+  updateStats();
+  loadQuestion();
+}
+
+function updateStats() {
+  document.getElementById("question-count").innerText = `Question ${currentQuestionIndex + 1}/10`;
+  document.getElementById("score-count").innerText = `⭐ Stars: ${score}`;
+  const progressPercent = ((currentQuestionIndex) / 10) * 100;
+  document.getElementById("progress").style.width = `${progressPercent}%`;
+}
+
+function loadQuestion() {
+  document.getElementById("feedback").style.display = "none";
+  document.getElementById("next-btn").style.display = "none";
+  
+  currentQuestion = currentQuiz[currentQuestionIndex];
+  document.getElementById("question-text").innerText = currentQuestion.q;
+  
+  const container = document.getElementById("interactive-area");
+  container.innerHTML = "";
+
+  if (currentQuestion.type === "mc") {
+    const grid = document.createElement("div");
+    grid.className = "options-grid";
+    // Barajar opciones de respuesta también para que no siempre estén en el mismo orden
+    let shuffledOptions = fnShuffleArray([...currentQuestion.options]);
+    shuffledOptions.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.innerText = opt;
+      btn.onclick = () => checkAnswer(opt, btn);
+      grid.appendChild(btn);
+    });
+    container.appendChild(grid);
+  } else if (currentQuestion.type === "fill") {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "fill-input";
+    input.placeholder = "Type your answer here...";
+    input.id = "user-input";
+    
+    const submitBtn = document.createElement("button");
+    submitBtn.className = "submit-btn";
+    submitBtn.innerText = "Check Answer 🎯";
+    submitBtn.onclick = () => {
+      const val = input.value.trim().toLowerCase();
+      checkAnswer(val, submitBtn);
+    };
+
+    container.appendChild(input);
+    container.appendChild(document.createElement("br"));
+    container.appendChild(submitBtn);
+  }
+
+  setTimeout(speakQuestion, 400);
+}
+
+function speakQuestion() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(currentQuestion.q);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.82; // Velocidad pausada especial para niños
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+function checkAnswer(userAns, element) {
+  const isCorrect = userAns.toLowerCase() === currentQuestion.ans.toLowerCase();
+  
+  const buttons = document.querySelectorAll(".option-btn, .submit-btn");
+  buttons.forEach(b => b.disabled = true);
+  const input = document.getElementById("user-input");
+  if (input) input.disabled = true;
+
+  if (isCorrect) {
+    score += 10;
+    if (element && element.tagName === "BUTTON") {
+      element.style.background = "#C8E6C9";
+      element.style.borderColor = "#4CAF50";
+      element.style.color = "#1B5E20";
+    }
+  } else {
+    document.getElementById("feedback-text").innerHTML = 
+      `<strong>Respuesta correcta:</strong> ${currentQuestion.ans}<br><br>${currentQuestion.explain}`;
+    document.getElementById("feedback").style.display = "block";
+    if (element && element.tagName === "BUTTON") {
+      element.style.background = "#FFCDD2";
+      element.style.borderColor = "#F44336";
+      element.style.color = "#C62828";
+    }
+  }
+
+  document.getElementById("score-count").innerText = `⭐ Stars: ${score}`;
+  document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function nextQuestion() {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < 10) {
+    updateStats();
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById("progress").style.width = "100%";
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("results-screen").style.display = "block";
+  
+  document.getElementById("final-score").innerText = `Your Score: ${score} / 100 Stars ⭐`;
+  const feedbackEl = document.getElementById("final-feedback");
+  
+  if (score >= 80) {
+    feedbackEl.innerText = "🌟 ¡Increíble trabajo! Conoces muy bien los animales de la granja y el presente continuo.";
+  } else if (score >= 50) {
+    feedbackEl.innerText = "👍 ¡Muy bien esfuerzo! Vamos a crear otro cuestionario para practicar un poco más.";
+  } else {
+    feedbackEl.innerText = "💪 ¡Sigue practicando campeon(a)! Intenta con otro cuestionario de repaso para mejorar.";
+  }
+}
+
+function generateNewQuiz() {
+  quizCount++;
+  startNewQuiz();
+}
+
+// Iniciar primer cuestionario
+startNewQuiz();
+</script>
+</body>
+</html>
